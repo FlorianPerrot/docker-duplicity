@@ -4,6 +4,7 @@ ENV HOME=/home/duplicity
 
 RUN set -x \
  && apk add --no-cache \
+        git \
         ca-certificates \
         gettext \
         gnupg \
@@ -38,9 +39,8 @@ RUN set -x \
  && pip install -U setuptools pip pipenv \
     # Install Python dependencies.
  && pipenv install --system --deploy \
-    # Clean up
- && python3 -m pip uninstall -y pip pipenv setuptools \
- && apk del --purge .build-deps
+ && git clone https://gitlab.com/duplicity/duplicity.git \
+ && cd duplicity && python3 setup.py install
 
 RUN set -x \
     # Run as non-root user.
